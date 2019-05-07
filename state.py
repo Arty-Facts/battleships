@@ -12,9 +12,12 @@ class State():
             res += "\n"
         return res
     
-    def add_hit(self, x, y):
+    def hit(self, x, y):
         self.map[x][y] = 'X'
     
-    def add_miss(self, x, y):
+    def miss(self, x, y):
         self.map[x][y] = '~'
+
+    def free(self,x,y):
+        return self.map[x][y] == '.'
 

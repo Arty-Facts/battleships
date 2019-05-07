@@ -27,7 +27,10 @@ class World():
         return self.map[x][y] == None
 
     def shot(self, x, y):
-        return self.map[x][y] != 0
+        if self.map[x][y] != None:
+            self.map[x][y].hit()
+            return True
+        return False
     
     def add(self, ship):
         while(not self.present(ship.id)):
@@ -47,5 +50,5 @@ class World():
         return id in self.ships
 
     def random(self):
-        return randint(0, self.width), randint(0, self.higth)
+        return randint(0, self.width-1), randint(0, self.higth-1)
 

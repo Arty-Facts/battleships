@@ -8,7 +8,7 @@ class Ship():
         self.hp = hp
         self.id = next(Ship._ids)
 
-    def hitt(self):
+    def hit(self):
         self.hp -= 1
     
     def sunk(self):
