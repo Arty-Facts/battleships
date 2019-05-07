@@ -19,5 +19,7 @@ class State():
         self.map[x][y] = '~'
 
     def free(self,x,y):
+        if x < 0 or x >= self.width or y < 0 or y >= self.higth:
+            return False
         return self.map[x][y] == '.'
 

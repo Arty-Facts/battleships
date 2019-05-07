@@ -2,9 +2,10 @@ from lib.world import World
 from lib.state import State
 from lib.ship import Ship
 from agents.random_agent import RandomAgent
+from agents.tag_hunt_agent import TagHunt
 
-_size = 100
-_ships = 40
+_size = 10
+_ships = 6
 
 def ships_left(ships):
     for s in ships:
@@ -33,7 +34,7 @@ def main():
     world = World(_size,_size)
     print(world)
     state = State(_size,_size)
-    agent = RandomAgent(state)
+    agent = TagHunt(state)
 
     counter = run(world, agent)
         
