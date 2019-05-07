@@ -1,5 +1,5 @@
-from random import randint, shuffle
-class Agent():
+from random import randint
+class RandomAgent():
 
     def __init__(self, state):
         self.state = state
