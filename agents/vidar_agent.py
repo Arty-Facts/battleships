@@ -8,7 +8,7 @@ def neighbors(x,y):
         (x-1,y), # W
     ]
 
-class VidarAgent():
+class HuntTarget():
     def __init__(self, state, print_out=False):
         self.state = state
         self.print_out = print_out
@@ -16,20 +16,9 @@ class VidarAgent():
         self.targets = set() # set of target tuples
 
 
-    # Confine the position to a checker pattern, randomise direction
-    def checkers(self, pos):
-        x, y = pos
-        if y % 2 + x % 2 != 1:
-            delta = 1 if bool(getrandbits(1)) else -1
-            if bool(getrandbits(1)):
-                x += delta
-            else:
-                y += delta
-        return x, y
-
     def next_tile(self):
         if len(self.targets) == 0:
-            x, y = self.checkers(self.random())
+            x, y = self.random()
         else:
             x, y = self.targets.pop()
         
@@ -57,3 +46,15 @@ class VidarAgent():
 
     def random(self):
         return randint(0, self.state.width-1), randint(0, self.state.higth-1)
+
+class HuntTargetParity(HuntTarget):
+    # Confine the position to a checker pattern, randomise direction
+    def random(self):
+        x, y = super().random()
+        if y % 2 + x % 2 != 1:
+            delta = 1 if bool(getrandbits(1)) else -1
+            if bool(getrandbits(1)):
+                x += delta
+            else:
+                y += delta
+        return x, y
