@@ -31,6 +31,11 @@ class World():
             self.map[x][y].hit()
             return True
         return False
+
+    def check(self, x, y):
+        if self.map[x][y] != None:
+            return True
+        return False
     
     def add(self, ship):
         while(not self.present(ship.id)):
