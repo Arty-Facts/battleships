@@ -1,8 +1,10 @@
 from random import randint
 class RandomAgent():
 
-    def __init__(self, state):
+    def __init__(self, state, print_out=False ):
         self.state = state
+        self.print_out = print_out
+        self.print_out
         self.x = -1
         self.y = -1
 
@@ -16,7 +18,8 @@ class RandomAgent():
     def result(self, hit):
         if hit:
             self.state.hit(self.x, self.y)
-            print(self.state)
+            if self.print_out:
+                print(self.state)
         else:
             self.state.miss(self.x, self.y)
 

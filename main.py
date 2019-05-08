@@ -2,7 +2,10 @@ from lib.world import World
 from lib.state import State
 from lib.ship import Ship
 from agents.random_agent import RandomAgent
-from agents.tag_hunt_agent import TagHunt
+from agents.vidar_agent import HuntTarget
+from agents.vidar_agent import HuntTargetParity
+from random import shuffle
+
 
 _size = 10
 _ships = 6
@@ -14,7 +17,8 @@ def ships_left(ships):
     return False
 
 def launch(world, ships):
-    ships.sort(key=lambda s:s.hp, reverse=False)
+    shuffle(ships)
+    #ships.sort(key=lambda s:s.hp, reverse=False)
     for s in ships:
         world.add(s)
 
@@ -34,10 +38,9 @@ def main():
     world = World(_size,_size)
     print(world)
     state = State(_size,_size)
-    agent = TagHunt(state)
+    agent = HuntTargetParity(state, True)
 
     counter = run(world, agent)
-        
     print("Done in", counter, "moves")
 
 
@@ -54,6 +57,6 @@ def bench(agent_class, n):
 
 
 if __name__ == "__main__":
-    main()
+    #main()
 
-    #print(bench(VidarAgent, 100))
+    print(bench(RandomAgent, 100000))
