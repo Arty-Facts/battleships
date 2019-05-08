@@ -11,5 +11,6 @@ class NeuralTagger(Tagger):
 
     def predict(self, state):
         scores = self.model.forward(state)
+        #TODO: pick the best and valid 
         pred_target = scores.argmax()
         return pred_target

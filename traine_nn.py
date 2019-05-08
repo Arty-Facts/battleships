@@ -55,6 +55,7 @@ def main():
     start = time()
     network = train_neural(HuntTargetParity ,State , World, Ship ,_size, _ships, n=1)
     print("training Done in {:.2} min".format((time() - start)*60))
+    #TODO: save to file
     bench(network, 10)
 
 if __name__ == "__main__":
