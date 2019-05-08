@@ -41,7 +41,19 @@ def main():
     print("Done in", counter, "moves")
 
 
+def bench(agent_class, n):
+    res = []
+    for i in range(n):
+        world = World(_size,_size)
+        state = State(_size,_size)
+        agent = agent_class(state)
+        res.append(run(world, agent))
+
+    return sum(res)/len(res)
+        
 
 
 if __name__ == "__main__":
     main()
+
+    #print(bench(VidarAgent, 100))
