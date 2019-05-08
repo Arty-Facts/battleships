@@ -27,24 +27,9 @@ class VidarAgent():
                 y += delta
         return x, y
 
-
-    def find_mid(self):
-        # Hard-coded start in the middle if we're without hits
-        # Earns us about 0.5 moves on avg
-        # if self.move_count < 1:
-        #     x, y = (4,4)
-        # elif self.move_count < 2:
-        #     x, y = (6,6)
-        # elif self.move_count < 3:
-        #     x, y = (3,3)
-        # else:
-
-        # Checkers offset
-        return self.checkers(self.random())
-
     def next_tile(self):
         if len(self.targets) == 0:
-            x, y = self.find_mid()
+            x, y = self.checkers(self.random())
         else:
             x, y = self.targets.pop()
         
