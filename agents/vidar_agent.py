@@ -17,15 +17,15 @@ class HuntTarget():
 
 
     def next_tile(self):
-        if len(self.targets) == 0:
-            x, y = self.random()
-        else:
-            x, y = self.targets.pop()
-        
+        #do/while pls
+        x, y = -1, -1
+        while not self.state.free(x,y):
+            if len(self.targets) == 0:
+                x, y = self.random()
+            else:
+                x, y = self.targets.pop()
+
         self.last = (x, y)
-        # Just retry if bad, hopefully can't get stuck in endless recursion
-        if not self.state.free(x,y):
-            return self.next_tile()
 
         return x, y
 
