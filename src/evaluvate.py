@@ -1,4 +1,3 @@
-from ML.neural_tagger_trainer import train_neural
 from agents.nn_agent import NN_Agent
 from agents.vidar_agent import HuntTargetParity
 from lib.world import World
@@ -51,13 +50,7 @@ def bench(network, n):
 
     return sum(res)/len(res)
         
-def main():
-    start = time()
-    print("Started Taining")
-    network = train_neural(HuntTargetParity ,State , World, Ship ,_size, _ships, n=10000, batch_size=100)
-    print("Training Done in {:.2f} s".format((time() - start)))
-    #TODO: save to file
-    print(bench(network, 100))
+
 
 if __name__ == "__main__":
-    main()
+    raise"not a script"

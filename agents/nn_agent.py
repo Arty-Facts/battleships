@@ -8,9 +8,7 @@ class NN_Agent():
         self.targets = targets
 
     def next_tile(self):
-        inp = torch.tensor(self.state.get(), dtype=torch.float)
-        target = self.network.predict(inp)
-        self.x, self.y = self.targets[target]
+        self.x, self.y = self.network.predict(self.state, self.targets)
         return self.x, self.y
 
 

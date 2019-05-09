@@ -1,4 +1,5 @@
 from ML.neural_tagger import NeuralTagger
+from src.evaluvate import bench
 from collections import defaultdict
 import torch.nn.functional as F
 import torch.optim as optim
@@ -24,13 +25,19 @@ def launch(world, ships):
     for s in ships:
         world.add(s)
 
-def batchify(Agent ,State , World, Ship, targets,_size, _ships, batch_size):
+def batchify(Agent ,State , World, Ship, targets,_size, _ships, n, batch_size):
     bx = []
     by = []
-    for t in range(1000*batch_size):
-        # done = t/100*batch_size
-        # left = 1-done
-        #print("["+"+"*int(done*10) + "-"*int(left*10)+"]", end=" ")
+    test = False
+    for t in range(n):
+        if t%(10*batch_size) == 0:
+            test = True
+
+        if t%100==0:
+            done = int(t/(n)*100)+1 
+            left = 100-done
+            #print(done)
+            print("["+"+"*done + "-"*left+"]", done, "%", end="\r")
         world = World(_size,_size)
         state = State(_size,_size)
         agent = Agent(state)
@@ -50,20 +57,23 @@ def batchify(Agent ,State , World, Ship, targets,_size, _ships, batch_size):
                 ans_by = torch.tensor(by, dtype=torch.long)
                 bx = []
                 by = []
-                yield ans_bx, ans_by
+                yield test, ans_bx, ans_by
+                test = False
         
 
 
-def train_neural(Agent ,State , World, Ship ,_size, _ships, n=1, batch_size=1000):
+def train_neural(Agent ,State , World, Ship ,_size, _ships, n=1000, batch_size=100):
     targets = make_targets(_size)
     classifier = NeuralTagger(targets)
     optimizer = optim.Adam(classifier.model.parameters())
-    for _ in range(n):
-        for bx, by in batchify(Agent ,State , World, Ship, targets, _size, _ships, batch_size):
-            optimizer.zero_grad()
-            output = classifier.model.forward(bx)
-            loss = F.cross_entropy(output, by)
-            loss.backward()
-            optimizer.step()
+    for test, bx, by in batchify(Agent ,State , World, Ship, targets, _size, _ships,n, batch_size):
+        optimizer.zero_grad()
+        output = classifier.model.forward(bx)
+        loss = F.cross_entropy(output, by)
+        loss.backward()
+        optimizer.step()
+        if test:
+            print()
+            print(bench(classifier,100))
     print()
     return classifier
