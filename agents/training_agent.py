@@ -1,4 +1,4 @@
-from random import random, randint, shuffle, getrandbits
+from random import randint, shuffle, getrandbits
 
 def neighbors(x,y):
     return [
@@ -21,11 +21,13 @@ class Train():
         #do/while pls
         x, y = -1, -1
         while not self.state.free(x,y):
-            if len(self.targets) == 0 or random() > 0.75:
+            if len(self.targets) == 0 or randint(0,100) > 75:
                 x, y = self.random()
             else:
                 shuffle(self.targets)
                 x, y = self.targets[-1]
+                if not self.state.free(x,y):
+                    self.targets.pop()
         return x, y
 
     def result(self, hit, x, y):
@@ -40,7 +42,7 @@ class Train():
             neig = neighbors(x,y)
             shuffle(neig)
             for n in neig:
-                if n not in self.visited:
+                if n not in self.visited and self.state.free(n[0], n[1]):
                     self.targets.append(n)
             if self.print_out:
                 print(self.state)

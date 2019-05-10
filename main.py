@@ -4,6 +4,7 @@ from lib.ship import Ship
 from agents.random_agent import RandomAgent
 from agents.vidar_agent import HuntTarget
 from agents.vidar_agent import HuntTargetParity
+from agents.training_agent import Train
 from random import shuffle
 
 
@@ -22,16 +23,26 @@ def launch(world, ships):
     for s in ships:
         world.add(s)
 
+def get_move(agent, world):
+    x, y = 0, 0
+    for _ in range(4):
+        x,y = agent.next_tile()
+        if world.check(x,y):
+            return x,y
+    return x,y
+
 def run(world, agent):
     ships = [Ship(i) for i in range(2,_ships)]
     ships.append(Ship(3))
     launch(world, ships)
     counter = 0
-    while(ships_left(ships)):
+    while(ships_left(ships) or counter > 2*(_size**2)):
         counter += 1
-        x,y = agent.next_tile()
+        x,y = get_move(agent,world)
         hit = world.shot(x,y)
-        agent.result(hit)
+        agent.result(hit,x,y)
+    if counter > _size**2:
+        print(agent.state)
     return counter
         
 def main():
@@ -59,4 +70,4 @@ def bench(agent_class, n):
 if __name__ == "__main__":
     #main()
 
-    print(bench(RandomAgent, 100000))
+    print(bench(Train, 100))
