@@ -34,8 +34,8 @@ class World():
 
     def check(self, x, y):
         if self.map[x][y] != None:
-            return True
-        return False
+            return False
+        return True
     
     def add(self, ship):
         while(not self.present(ship.id)):

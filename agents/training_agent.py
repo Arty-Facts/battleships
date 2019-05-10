@@ -1,4 +1,4 @@
-from random import randint, shuffle, getrandbits
+from random import random, randint, shuffle, getrandbits
 
 def neighbors(x,y):
     return [
@@ -13,35 +13,42 @@ class Train():
         self.state = state
         self.print_out = print_out
         self.visited = set() # set of target tuples
-        self.targets = set() # set of target tuples
+        self.targets = [] # set of target tuples
+        
 
 
     def next_tile(self):
         #do/while pls
         x, y = -1, -1
         while not self.state.free(x,y):
-            if len(self.targets) == 0:
+            if len(self.targets) == 0 or random() > 0.75:
                 x, y = self.random()
             else:
-                x, y = self.targets.pop()
+                shuffle(self.targets)
+                x, y = self.targets[-1]
         return x, y
 
     def result(self, hit, x, y):
-        self.visited.add(self.last)
+        self.visited.add((x,y))
+        if (x,y) in self.targets:
+            self.targets.remove((x,y))
+
 
         if hit:
             self.state.hit(x, y)
             # Add adjacent unvisited targets
-            for n in neighbors(x,y):
+            neig = neighbors(x,y)
+            shuffle(neig)
+            for n in neig:
                 if n not in self.visited:
-                    self.targets.add(n)
+                    self.targets.append(n)
             if self.print_out:
                 print(self.state)
         else:
             self.state.miss(x, y)
     
     def random(self):
-        x, y = super().random()
+        x, y = randint(0, self.state.width-1), randint(0, self.state.higth-1)
         if y % 2 + x % 2 != 1:
             delta = 1 if bool(getrandbits(1)) else -1
             if bool(getrandbits(1)):
