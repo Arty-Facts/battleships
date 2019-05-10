@@ -9,24 +9,31 @@ def neighbors(x,y):
     ]
 
 class Train():
-    def __init__(self, state, print_out=False):
+    def __init__(self, state, world,print_out=False):
         self.state = state
+        self.world = world
         self.print_out = print_out
         self.visited = set() # set of target tuples
         self.targets = [] # set of target tuples
         
-
+    def get_move(self, n=1):
+        x, y = -1, -1
+        for _ in range(n):
+            x,y = self.next_tile()
+            if self.world.check(x,y):
+                return x,y
+        return x,y
 
     def next_tile(self):
         #do/while pls
         x, y = -1, -1
         while not self.state.free(x,y):
-            if len(self.targets) == 0 or randint(0,100) > 75:
+            if len(self.targets) == 0:# or randint(0,100) > 75:
                 x, y = self.random()
             else:
-                shuffle(self.targets)
+                #shuffle(self.targets)
                 x, y = self.targets[-1]
-                if not self.state.free(x,y):
+                if not self.world.free(x,y):
                     self.targets.pop()
         return x, y
 
@@ -42,7 +49,7 @@ class Train():
             neig = neighbors(x,y)
             shuffle(neig)
             for n in neig:
-                if n not in self.visited and self.state.free(n[0], n[1]):
+                if n not in self.visited and not self.world.free(n[0], n[1]):
                     self.targets.append(n)
             if self.print_out:
                 print(self.state)

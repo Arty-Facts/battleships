@@ -37,4 +37,26 @@ class State():
                 else:
                     res.append(3)
         return res
+    def get_one_hot(self):
+        res = []
+        for x in range(self.width):
+            for y in range(self.higth):
+                c = self.map[x][y]
+                if c == ".":
+                    res.append(1)
+                    res.append(0)
+                    res.append(0)
+                elif c == "~":
+                    res.append(0)
+                    res.append(1)
+                    res.append(0)
+                elif c == "X":
+                    res.append(0)
+                    res.append(0)
+                    res.append(1)
+                else:
+                    raise "cant create one_hot"
+
+        return res
+
 

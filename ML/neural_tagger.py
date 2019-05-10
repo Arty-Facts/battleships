@@ -4,13 +4,11 @@ import torch
 
 class NeuralTagger(Tagger):
 
-    def __init__(self, targets, hidden_dim=300):
-        self.targets = targets
-        self.dim = len(targets)
-        self.model = Network(hidden_dim, self.dim)
+    def __init__(self,input_dim, target_dim, hidden_dim=300):
+        self.model = Network(input_dim,hidden_dim, target_dim)
 
     def predict(self, state, targets):
-        inp = torch.tensor(state.get(), dtype=torch.float)
+        inp = torch.tensor(state.get_one_hot(), dtype=torch.float)
         scores = self.model.forward(inp)
         #TODO: pick the best and valid 
         res = []

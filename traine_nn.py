@@ -17,6 +17,7 @@ def main():
     print("Training Done in {:.2f} s".format((time() - start)))
     #TODO: save to file
     print(bench(network, EVAL_FINAL))
+    torch.save(network.model.state_dict(),"./model")
 
 if __name__ == "__main__":
     main()

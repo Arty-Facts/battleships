@@ -30,9 +30,9 @@ def run(world, agent):
     counter = 0
     while(ships_left(ships) or counter > 2*(_size**2)):
         counter += 1
-        x,y = agent.next_tile()
+        x,y = agent.get_move(1)
         hit = world.shot(x,y)
-        agent.result(hit)
+        agent.result(hit,x,y)
     if counter > _size**2:
         print(agent.state)
     return counter
@@ -41,8 +41,7 @@ def main():
     world = World(_size,_size)
     print(world)
     state = State(_size,_size)
-    agent = HuntTargetParity(state, True)
-
+    agent = Train(state, world, True)
     counter = run(world, agent)
     print("Done in", counter, "moves")
 
@@ -52,7 +51,7 @@ def bench(agent_class, n):
     for i in range(n):
         world = World(_size,_size)
         state = State(_size,_size)
-        agent = agent_class(state)
+        agent = agent_class(state, world)
         res.append(run(world, agent))
 
     return sum(res)/len(res)
@@ -62,4 +61,4 @@ def bench(agent_class, n):
 if __name__ == "__main__":
     #main()
 
-    print(bench(HuntTargetParity, 100))
+    print(bench(Train, 100))

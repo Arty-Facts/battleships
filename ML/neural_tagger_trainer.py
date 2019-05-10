@@ -43,22 +43,22 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
         if (t+1)%(EVAL_EVERY) == 0:
             test = True
 
-        if t%10==0:
+        if t%100==0:
             done = int(t/(n)*100)+1 
             left = 100-done
             #print(done)
             print("["+"+"*done + "-"*left+"]", done, "%", end="\r")
         world = World(WORLD_SIZE,WORLD_SIZE)
         state = State(WORLD_SIZE,WORLD_SIZE)
-        agent = Agent(state)
+        agent = Agent(state, world)
         ships = [Ship(i) for i in range(2,SHIPS)]
         ships.append(Ship(3))
         launch(world, ships)
         counter = 0
         while(ships_left(ships)):
             counter += 1
-            bx.append(torch.tensor(agent.state.get(), dtype=torch.float))
-            x,y = get_move(agent, world)
+            bx.append(torch.tensor(agent.state.get_one_hot(), dtype=torch.float))
+            x,y = agent.get_move(20)
             hit = world.shot(x,y)
             agent.result(hit, x, y)
             by.append(targets[(x,y)])
@@ -74,7 +74,7 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
 
 def train_neural(Agent ,State , World, Ship, n=1000, batch_size=100):
     targets = make_targets(WORLD_SIZE)
-    classifier = NeuralTagger(targets)
+    classifier = NeuralTagger(len(targets)*3,len(targets))
     optimizer = optim.Adam(classifier.model.parameters())
     for test, bx, by in batchify(Agent ,State , World, Ship, targets, n, batch_size):
         optimizer.zero_grad()
