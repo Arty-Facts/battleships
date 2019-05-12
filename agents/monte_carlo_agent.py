@@ -15,8 +15,11 @@ class MonteCarlo(Agent):
         self.priority = MONTE_CARLO_PRIORITY  # The priority to give simulations that intersect hits
 
 
+
     def monte_carlo(self, out_path=""):
         simulations = []
+        if self.state.tiles_left == 1:
+            self.priority *= 2
 
         sim_state = SimulationBoard(self.state)
         for i in range(self.move_sim):
@@ -40,7 +43,7 @@ class MonteCarlo(Agent):
             fig.add_subplot(1, 2, 1)
             plt.imshow(percentages, cmap='hot', interpolation='nearest')
             fig.add_subplot(1, 2, 2)
-            plt.imshow(sim_state.get_board() * 5, cmap='bwr', interpolation=None)
+            plt.imshow(sim_state.get_board() * 10, cmap='bwr', interpolation=None)
             plt.savefig("heatmap/out")
             plt.close(fig)
 
@@ -59,6 +62,7 @@ class MonteCarlo(Agent):
     def result(self, x, y, hit, sinc):
         if hit:
             self.state.hit(x, y)
+            self.state.tiles_left -= 1
             if self.print_out:
                 print(self.state)
         else:

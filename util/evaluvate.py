@@ -34,7 +34,7 @@ def bench(agent_class, n):
     res = []
     moves = 100
     for i in range(n):
-        print(i+1, "out of", n, "latest round", moves, end="\r")
+        print(i+1, "out of", n, "latest round", moves, " "*10, end="\r")
         world = World(WORLD_SIZE,WORLD_SIZE)
         state = State(WORLD_SIZE,WORLD_SIZE)
         agent = agent_class(state)

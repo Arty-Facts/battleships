@@ -1,11 +1,14 @@
 from random import randint, shuffle
+from config import *
+
 class State():
     def __init__(self, width, higth):
         self.width = width
         self.higth = higth
         self.map = [['.'] * higth for _ in range(width)]
-        self.ships = None
         self._dir = [(1,0),(-1,0),(0,1),(0,-1)]
+        self.ships_left = len(SHIPS)
+        self.tiles_left = sum(SHIPS)
 
     def __repr__(self):
         res = ""
@@ -41,7 +44,7 @@ class State():
 
     def add(self, length):
         res = []
-        for i in range(10000):
+        for i in range(1000):
             x, y = self.random()
             shuffle(self._dir)
             for dir_x, dir_y in self._dir:

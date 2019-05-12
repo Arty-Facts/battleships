@@ -32,7 +32,13 @@ class SimulationBoard():
         #     if not s.sunk():
         #         length = s.size
         shuffle(SHIPS)
-        length = SHIPS[0]
+        length = 2
+        for s in SHIPS:
+            if s > 1 and s < self.state.tiles_left:
+                length = SHIPS[0]
+
+        # if self.state.ships_left == 1:
+        #     length = max(2,self.state.tiles_left)
 
         #length = self.attack_board.defense_board.available_ships[index]
         ship_cord = self.state.add(length)
