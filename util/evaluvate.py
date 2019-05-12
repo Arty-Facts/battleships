@@ -32,12 +32,14 @@ def run(world, agent):
 
 def bench(agent_class, n):
     res = []
+    moves = 100
     for i in range(n):
-        print(i+1, "out of", n, end="\r")
+        print(i+1, "out of", n, "latest round", moves, end="\r")
         world = World(WORLD_SIZE,WORLD_SIZE)
         state = State(WORLD_SIZE,WORLD_SIZE)
         agent = agent_class(state)
-        res.append(run(world, agent))
+        moves = run(world, agent)
+        res.append(moves)
 
     return sum(res)/len(res)
 
