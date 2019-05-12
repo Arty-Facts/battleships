@@ -9,7 +9,7 @@ def neighbors(x,y):
     ]
 
 class Train():
-    def __init__(self, state, world,print_out=False):
+    def __init__(self, state, world ,print_out=False):
         self.state = state
         self.world = world
         self.print_out = print_out
@@ -33,7 +33,7 @@ class Train():
             else:
                 #shuffle(self.targets)
                 x, y = self.targets[-1]
-                if not self.world.free(x,y):
+                if not self.state.free(x,y):
                     self.targets.pop()
         return x, y
 
@@ -49,7 +49,7 @@ class Train():
             neig = neighbors(x,y)
             shuffle(neig)
             for n in neig:
-                if n not in self.visited and not self.world.free(n[0], n[1]):
+                if n not in self.visited:
                     self.targets.append(n)
             if self.print_out:
                 print(self.state)

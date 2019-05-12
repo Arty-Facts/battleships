@@ -4,7 +4,7 @@ import torch
 
 class NeuralTagger(Tagger):
 
-    def __init__(self,input_dim, target_dim, hidden_dim=300):
+    def __init__(self,input_dim, target_dim, hidden_dim=300,):
         self.model = Network(input_dim,hidden_dim, target_dim)
 
     def predict(self, state, targets):

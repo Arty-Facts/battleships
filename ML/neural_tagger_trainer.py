@@ -1,6 +1,6 @@
 from ML.neural_tagger import NeuralTagger
-from src.evaluvate import bench
-from lib.constents import *
+from ML.evaluvate import bench
+from config import *
 from collections import defaultdict
 import torch.nn.functional as F
 import torch.optim as optim
@@ -51,14 +51,13 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
         world = World(WORLD_SIZE,WORLD_SIZE)
         state = State(WORLD_SIZE,WORLD_SIZE)
         agent = Agent(state, world)
-        ships = [Ship(i) for i in range(2,SHIPS)]
-        ships.append(Ship(3))
+        ships = [Ship(i) for i in SHIPS]
         launch(world, ships)
         counter = 0
         while(ships_left(ships)):
             counter += 1
             bx.append(torch.tensor(agent.state.get_one_hot(), dtype=torch.float))
-            x,y = agent.get_move(20)
+            x,y = agent.get_move()
             hit = world.shot(x,y)
             agent.result(hit, x, y)
             by.append(targets[(x,y)])
@@ -72,10 +71,15 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
         
 
 
-def train_neural(Agent ,State , World, Ship, n=1000, batch_size=100):
+def train_neural(Agent ,State , World, Ship, model="", n=1000, batch_size=100):
     targets = make_targets(WORLD_SIZE)
     classifier = NeuralTagger(len(targets)*3,len(targets))
     optimizer = optim.Adam(classifier.model.parameters())
+    if model != "":
+        checkpoint = torch.load( f"ML/models/{model}")
+        classifier.model.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
     for test, bx, by in batchify(Agent ,State , World, Ship, targets, n, batch_size):
         optimizer.zero_grad()
         output = classifier.model.forward(bx)
@@ -86,4 +90,12 @@ def train_neural(Agent ,State , World, Ship, n=1000, batch_size=100):
             print()
             print(bench(classifier,EVAL_FOR))
     print()
+    return classifier, optimizer
+
+def load_model(model):
+    targets = make_targets(WORLD_SIZE)
+    classifier = NeuralTagger(len(targets)*3,len(targets))
+
+    checkpoint = torch.load( f"ML/models/{model}")
+    classifier.model.load_state_dict(checkpoint['model_state_dict'])
     return classifier

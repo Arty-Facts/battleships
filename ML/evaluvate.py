@@ -1,8 +1,9 @@
-from agents.nn_agent import NN_Agent
+from ML.nn_agent import NN_Agent
 from agents.vidar_agent import HuntTargetParity
 from lib.world import World
 from lib.state import State
 from lib.ship import Ship
+from config import *
 from time import time
 from random import shuffle
 import torch
@@ -23,11 +24,10 @@ def launch(world, ships):
         world.add(s)
 
 def run(world, agent):
-    ships = [Ship(i) for i in range(2,_ships)]
-    ships.append(Ship(3))
+    ships = [Ship(i) for i in SHIPS]
     launch(world, ships)
     counter = 0
-    while(ships_left(ships) and counter < 2*(_size**2)):
+    while(ships_left(ships) and counter < 2*(WORLD_SIZE**2)):
         counter += 1
         x,y = agent.next_tile()
         hit = world.shot(x,y)
@@ -38,13 +38,13 @@ def run(world, agent):
 def bench(network, n):
     res = []
     targets = []
-    for x in range(_size):
-        for y in range(_size):
+    for x in range(WORLD_SIZE):
+        for y in range(WORLD_SIZE):
             targets.append((x,y))
     
     for i in range(n):
-        world = World(_size,_size)
-        state = State(_size,_size)
+        world = World(WORLD_SIZE,WORLD_SIZE)
+        state = State(WORLD_SIZE,WORLD_SIZE)
         agent = NN_Agent(state, network, targets)
         res.append(run(world, agent))
 

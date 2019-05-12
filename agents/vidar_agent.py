@@ -1,4 +1,5 @@
 from random import randint, shuffle, getrandbits
+from agents.agent import Agent
 
 def neighbors(x,y):
     return [
@@ -8,7 +9,7 @@ def neighbors(x,y):
         (x-1,y), # W
     ]
 
-class HuntTarget():
+class HuntTarget(Agent):
     def __init__(self, state, print_out=False):
         self.state = state
         self.print_out = print_out
@@ -25,13 +26,10 @@ class HuntTarget():
             else:
                 x, y = self.targets.pop()
 
-        self.last = (x, y)
-
         return x, y
 
-    def result(self, hit):
-        x, y = self.last
-        self.visited.add(self.last)
+    def result(self, x, y, hit, sink):
+        self.visited.add((x,y))
 
         if hit:
             self.state.hit(x, y)
