@@ -26,8 +26,8 @@ def run(world, agent):
     while(ships_left(ships) or counter > 2*(WORLD_SIZE**2)):
         counter += 1
         x,y = agent.next_tile()
-        hit = world.shot(x,y)
-        agent.result(x,y,hit, False)
+        hit, sinc = world.shot(x,y)
+        agent.result(x,y,hit, sinc)
     return counter
 
 def bench(agent_class, n):

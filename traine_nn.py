@@ -11,14 +11,16 @@ from random import shuffle
 import torch
       
 def main(model):
+    print(model)
     start = time()
     print("Started Taining")
     network , optimizer = train_neural(Train ,State , World, Ship, n=TRAINING_ROUNDS, batch_size=BATCH_SIZR, model=model)
     print("Training Done in {:.2f} s".format((time() - start)))
     #TODO: save to file
     print(bench(network, BENCHMARK))
-    if model == "":
-        model = input("Name of the model:")
+    imp = input("Name of the model:")
+    if imp != "":
+        model = imp
     torch.save({
             'model_state_dict': network.model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
@@ -27,7 +29,6 @@ def main(model):
 
 if __name__ == "__main__":
     import sys
-    print(len(sys.argv))
     if len(sys.argv) == 1:
         main("")
     else:

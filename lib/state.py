@@ -17,6 +17,9 @@ class State():
     
     def hit(self, x, y):
         self.map[x][y] = 'X'
+
+    def sinc(self, x, y):
+        self.map[x][y] = '*'
     
     def miss(self, x, y):
         self.map[x][y] = '~'
@@ -34,7 +37,7 @@ class State():
     def blocked(self,x,y):
         if x < 0 or x >= self.width or y < 0 or y >= self.higth:
             return True
-        return self.map[x][y] == '~'
+        return self.map[x][y] == '~' or self.map[x][y] == '*'
 
     def add(self, length):
         res = []
@@ -66,8 +69,6 @@ class State():
                     res.append(1)
                 elif c == "X":
                     res.append(2)
-                else:
-                    res.append(3)
         return res
     
     def get_one_hot(self):
@@ -79,10 +80,9 @@ class State():
                     res += [1,0,0]
                 elif c == "~":
                     res += [0,1,0]
-                elif c == "X":
-                    res += [0,0,1]
                 else:
-                    raise "cant create one_hot"
+                    res += [0,0,1]
+
 
         return res
 

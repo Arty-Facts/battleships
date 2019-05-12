@@ -86,9 +86,9 @@ def train_neural(Agent ,State , World, Ship, model="", n=1000, batch_size=100):
         loss = F.cross_entropy(output, by)
         loss.backward()
         optimizer.step()
-        if test and EVAL:
+        if test and EVAL_DURING_RUNTIME:
             print()
-            print(bench(classifier,EVAL_FOR))
+            print(bench(classifier,EVAL_ROUNDS))
     print()
     return classifier, optimizer
 

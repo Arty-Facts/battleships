@@ -4,7 +4,7 @@ from config import *
 
 if __name__ == "__main__":
     #main()
-    models = ["model", "tmp", "taghunt"]
+    models = ["taghunt", "see"]
     print("Benshmarking with", BENCHMARK, "games")
     for model in models:
         agent = load_model(model)
