@@ -44,7 +44,7 @@ class State():
 
     def add(self, length):
         res = []
-        for i in range(1000):
+        for i in range(self.width * self.higth):
             x, y = self.random()
             shuffle(self._dir)
             for dir_x, dir_y in self._dir:
