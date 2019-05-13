@@ -1,13 +1,14 @@
 ### World ###
-WORLD_SIZE = 10
+WORLD_SIZE_X = 8
+WORLD_SIZE_Y = 12
 SHIPS = [5,4,3,3,2]
 
 ### Benchmark ###
-BENCHMARK = 100
+BENCHMARK = 10
 
 ### ML ###
 TRAINING_ROUNDS = 1_000_000
-BATCH_SIZR = 100
+BATCH_SIZR = 10
 
 #for evaluvation during training
 EVAL_DURING_RUNTIME = False
@@ -16,6 +17,6 @@ EVAL_EVERY = 100_000
 
 
 ### Monte Carlo ###
-MONTE_CARLO_SAMPLES = 100
+MONTE_CARLO_SAMPLES = 1000
 MONTE_CARLO_PRIORITY = 5
 HEAT_MAP = True

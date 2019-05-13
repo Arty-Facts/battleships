@@ -8,6 +8,7 @@ from agents.monte_carlo_agent import MonteCarlo
 from agents.monte_carlo_sinc_agent import MonteCarloSinc
 from util.evaluvate import bench, run
 from config import *
+from time import time
 
 
 
@@ -15,4 +16,6 @@ if __name__ == "__main__":
     agents = [RandomAgent, HuntTarget, HuntTargetParity, MonteCarlo, MonteCarloSinc]
     print("Benshmarking with", BENCHMARK, "games")
     for agent in agents:
-        print("{:.2f} moves: {}".format(bench(agent, BENCHMARK), agent.__name__ )+" "*10)
+        start = time()
+        res = bench(agent, BENCHMARK)
+        print("{:.2f} moves: {}".format(res, agent.__name__ ), time() - start, ""*10)
