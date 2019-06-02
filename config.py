@@ -7,8 +7,8 @@ SHIPS = [5,4,3,3,2]
 BENCHMARK = 10
 
 ### ML ###
-TRAINING_ROUNDS = 1_000_000
-BATCH_SIZR = 10
+TRAINING_ROUNDS = 300_000
+BATCH_SIZR = 100
 
 #for evaluvation during training
 EVAL_DURING_RUNTIME = False

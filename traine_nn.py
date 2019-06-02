@@ -10,7 +10,7 @@ from time import time
 from random import shuffle
 import torch
       
-def main(model):
+def main(model, save=None):
     print(model)
     start = time()
     print("Started Taining")
@@ -18,9 +18,12 @@ def main(model):
     print("Training Done in {:.2f} s".format((time() - start)))
     #TODO: save to file
     print(bench(network, BENCHMARK))
-    imp = input("Name of the model:")
-    if imp != "":
-        model = imp
+    if save == None:
+        imp = input("Name of the model:")
+        if imp != "":
+            model = imp
+    else:
+        model = save
     torch.save({
             'model_state_dict': network.model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
@@ -31,5 +34,7 @@ if __name__ == "__main__":
     import sys
     if len(sys.argv) == 1:
         main("")
-    else:
+    elif len(sys.argv) == 2:
         main(sys.argv[1])
+    elif len(sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2])

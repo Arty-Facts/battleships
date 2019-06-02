@@ -8,7 +8,7 @@ class NeuralTagger(Tagger):
         self.model = Network(input_dim,hidden_dim, target_dim)
 
     def predict(self, state, targets):
-        inp = torch.tensor(state.get_one_hot(), dtype=torch.float)
+        inp = torch.tensor(state.get(), dtype=torch.float)
         scores = self.model.forward(inp)
         #TODO: pick the best and valid 
         res = []
