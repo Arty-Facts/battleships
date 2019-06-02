@@ -1,3 +1,15 @@
+# Agents playing batlleships 
+
+## run
+
+```
+python3 eval_bots.py
+```
+
+## Configure configure 
+
+All configuration are in config.py in root folder
+
 ## latest run
 ```
 Benshmarking with 100 games

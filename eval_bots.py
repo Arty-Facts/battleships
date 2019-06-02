@@ -2,8 +2,8 @@ from lib.world import World
 from lib.state import State
 from lib.ship import Ship
 from agents.random_agent import RandomAgent
-from agents.vidar_agent import HuntTarget
-from agents.vidar_agent import HuntTargetParity
+from agents.hunt_target_agent import HuntTarget
+from agents.hunt_target_agent import HuntTargetParity
 from agents.monte_carlo_agent import MonteCarlo
 from agents.monte_carlo_sinc_agent import MonteCarloSinc
 from util.evaluvate import bench, run

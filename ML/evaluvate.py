@@ -1,5 +1,4 @@
 from ML.nn_agent import NN_Agent
-from agents.vidar_agent import HuntTargetParity
 from lib.world import World
 from lib.state import State
 from lib.ship import Ship
@@ -43,8 +42,8 @@ def bench(network, n):
             targets.append((x,y))
     
     for i in range(n):
-        world = World(WORLD_SIZE_X*WORLD_SIZE_Y)
-        state = State(WORLD_SIZE_X*WORLD_SIZE_Y)
+        world = World(WORLD_SIZE_X, WORLD_SIZE_Y)
+        state = State(WORLD_SIZE_X, WORLD_SIZE_Y)
         agent = NN_Agent(state, network, targets)
         res.append(run(world, agent))
 

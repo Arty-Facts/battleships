@@ -1,4 +1,3 @@
-from agents.vidar_agent import HuntTargetParity
 from lib.world import World
 from lib.state import State
 from lib.ship import Ship

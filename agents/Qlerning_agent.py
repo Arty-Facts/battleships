@@ -3,6 +3,7 @@ from agents.agent import Agent
 class QlergningAgent(Agent):
 
     def __init__(self, state, print_out=False ):
+        raise "not finished"
         self.state = state
         self.print_out = print_out
         self.Qtable = {}
