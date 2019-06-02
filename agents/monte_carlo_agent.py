@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from random import randint, shuffle
 from config import *
 from lib.simulation_board import SimulationBoard
-
+# Inspired by DataSnaek from https://github.com/DataSnaek/battleships_ai
 
 class MonteCarlo(Agent):
 

@@ -1,4 +1,6 @@
 # Agents playing batlleships 
+Agents are inspired by http://www.datagenetics.com/blog/december32011/
+and the montecarlo implematation uses DataSnaek implementation from https://github.com/DataSnaek/battleships_ai as a base
 
 ## run
 
@@ -13,11 +15,6 @@ All configuration are in config.py in root folder
 ## latest run
 ```
 Benshmarking with 100 games
-95.89 moves: RandomAgent
-65.72 moves: HuntTarget
-62.33 moves: HuntTargetParity 
-56.62 moves: MonteCarlo 
-53.12 moves: MonteCarloSinc  
 
 95.60 moves: RandomAgent
 63.87 moves: HuntTarget

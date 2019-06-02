@@ -6,7 +6,6 @@ from config import *
 from lib.simulation_board import SimulationBoard
 from agents.monte_carlo_agent import MonteCarlo
 
-
 class MonteCarloSinc(MonteCarlo):
 
     def __init__(self, state, print_out=False):
