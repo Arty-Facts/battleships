@@ -2,6 +2,14 @@
 Agents are inspired by http://www.datagenetics.com/blog/december32011/
 and the montecarlo implematation uses DataSnaek implementation from https://github.com/DataSnaek/battleships_ai as a base
 
+## Interface
+Agent have an internarepresentaion of the gamestate.
+
+When calling **next_tile()** the agent will supply the next target to fire upon.
+
+The agent updates its internal state when reciving **result(x, y, hit, sink)**
+
+
 ## run
 
 ```
