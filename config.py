@@ -4,10 +4,10 @@ WORLD_SIZE_X = 10
 SHIPS = [5,4,3,3,2]
 
 ### Benchmark ###
-BENCHMARK = 10
+BENCHMARK = 100
 
 ### ML ###
-TRAINING_ROUNDS = 300_000
+TRAINING_ROUNDS = 1000
 BATCH_SIZR = 100
 
 #for evaluvation during training

@@ -14,7 +14,7 @@ def main(model, save=None):
     print(model)
     start = time()
     print("Started Taining")
-    network , optimizer = train_neural(Train ,State , World, Ship, n=TRAINING_ROUNDS, batch_size=BATCH_SIZR, model=model)
+    network , optimizer = train_neural(Train ,State , World, Ship, n=TRAINING_ROUNDS, model=model)
     print("Training Done in {:.2f} s".format((time() - start)))
     #TODO: save to file
     print(bench(network, BENCHMARK))

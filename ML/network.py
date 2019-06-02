@@ -8,6 +8,8 @@ class Network(torch.nn.Module):
         # model = TheModelClass(*args, **kwargs)
         self.model = torch.nn.Sequential(torch.nn.Linear(input_dim, hidden_dim), \
                                         torch.nn.ReLU(), \
+                                        # torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        # torch.nn.ReLU(), \
                                         torch.nn.Linear(hidden_dim, output_dim))
         
 
