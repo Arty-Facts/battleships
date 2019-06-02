@@ -6,9 +6,13 @@ class State():
         self.width = width
         self.higth = higth
         self.map = [['.'] * higth for _ in range(width)]
-        self._dir = [(1,0),(-1,0),(0,1),(0,-1)]
+        self._dir = [(1,0),(0,1)]
         self.ships_left = len(SHIPS)
         self.tiles_left = sum(SHIPS)
+        self.targets = []
+        for x in range(WORLD_SIZE_X):
+            for y in range(WORLD_SIZE_Y):
+                self.targets.append((x,y))
 
     def __repr__(self):
         res = ""
@@ -44,8 +48,8 @@ class State():
 
     def add(self, length):
         res = []
-        for i in range(self.width * self.higth):
-            x, y = self.random()
+        shuffle(self.targets)
+        for x, y in self.targets:
             shuffle(self._dir)
             for dir_x, dir_y in self._dir:
                 for i in range(length):
