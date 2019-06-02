@@ -27,7 +27,7 @@ def run(world, agent):
     ships = [Ship(i) for i in SHIPS]
     launch(world, ships)
     counter = 0
-    while(ships_left(ships) and counter < 2*(WORLD_SIZE**2)):
+    while(ships_left(ships) and counter < 2*(WORLD_SIZE_X*WORLD_SIZE_Y)):
         counter += 1
         x,y = agent.next_tile()
         hit = world.shot(x,y)
@@ -38,13 +38,13 @@ def run(world, agent):
 def bench(network, n):
     res = []
     targets = []
-    for x in range(WORLD_SIZE):
-        for y in range(WORLD_SIZE):
+    for x in range(WORLD_SIZE_X):
+        for y in range(WORLD_SIZE_Y):
             targets.append((x,y))
     
     for i in range(n):
-        world = World(WORLD_SIZE,WORLD_SIZE)
-        state = State(WORLD_SIZE,WORLD_SIZE)
+        world = World(WORLD_SIZE_X*WORLD_SIZE_Y)
+        state = State(WORLD_SIZE_X*WORLD_SIZE_Y)
         agent = NN_Agent(state, network, targets)
         res.append(run(world, agent))
 

@@ -7,10 +7,10 @@ import torch.optim as optim
 import torch
 from random import shuffle
 
-def make_targets(size):
+def make_targets(size_x, size_y):
     targets = {}
-    for x in range(size):
-        for y in range(size):
+    for x in range(size_x):
+        for y in range(size_y):
             targets[(x,y)] = len(targets)
     return targets
 
@@ -48,8 +48,8 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
             left = 100-done
             #print(done)
             print("["+"+"*done + "-"*left+"]", done, "%", end="\r")
-        world = World(WORLD_SIZE,WORLD_SIZE)
-        state = State(WORLD_SIZE,WORLD_SIZE)
+        world = World(WORLD_SIZE_X,WORLD_SIZE_Y)
+        state = State(WORLD_SIZE_X,WORLD_SIZE_Y)
         agent = Agent(state, world)
         ships = [Ship(i) for i in SHIPS]
         launch(world, ships)
@@ -72,7 +72,7 @@ def batchify(Agent ,State , World, Ship, targets, n, batch_size):
 
 
 def train_neural(Agent ,State , World, Ship, model="", n=1000, batch_size=100):
-    targets = make_targets(WORLD_SIZE)
+    targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger(len(targets)*3,len(targets))
     optimizer = optim.Adam(classifier.model.parameters())
     if model != "":
@@ -93,7 +93,7 @@ def train_neural(Agent ,State , World, Ship, model="", n=1000, batch_size=100):
     return classifier, optimizer
 
 def load_model(model):
-    targets = make_targets(WORLD_SIZE)
+    targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger(len(targets)*3,len(targets))
 
     checkpoint = torch.load( f"ML/models/{model}")

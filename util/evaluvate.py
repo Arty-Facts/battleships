@@ -23,7 +23,7 @@ def run(world, agent):
     ships = [Ship(i) for i in SHIPS]
     launch(world, ships)
     counter = 0
-    while(ships_left(ships) or counter > 2*(WORLD_SIZE**2)):
+    while(ships_left(ships) or counter > 2*(WORLD_SIZE_X*WORLD_SIZE_Y)):
         counter += 1
         x,y = agent.next_tile()
         hit, sinc = world.shot(x,y)
@@ -35,8 +35,8 @@ def bench(agent_class, n):
     moves = 100
     for i in range(n):
         print(i+1, "out of", n, "latest round", moves, " "*10, end="\r")
-        world = World(WORLD_SIZE,WORLD_SIZE)
-        state = State(WORLD_SIZE,WORLD_SIZE)
+        world = World(WORLD_SIZE_X,WORLD_SIZE_Y)
+        state = State(WORLD_SIZE_X,WORLD_SIZE_Y)
         agent = agent_class(state)
         moves = run(world, agent)
         res.append(moves)

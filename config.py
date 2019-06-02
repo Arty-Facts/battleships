@@ -1,5 +1,6 @@
 ### World ###
-WORLD_SIZE = 10
+WORLD_SIZE_Y = 10
+WORLD_SIZE_X = 10
 SHIPS = [5,4,3,3,2]
 
 ### Benchmark ###

@@ -13,8 +13,8 @@ from config import *
 
         
 def main():
-    world = World(WORLD_SIZE,WORLD_SIZE)
-    state = State(WORLD_SIZE,WORLD_SIZE)
+    world = World(WORLD_SIZE_X,WORLD_SIZE_Y)
+    state = State(WORLD_SIZE_X,WORLD_SIZE_Y)
     agent = MonteCarloSinc(state, True)
     counter = run(world, agent)
     print("Done in", counter, "moves")
