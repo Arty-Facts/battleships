@@ -1,10 +1,6 @@
 import os
 
-os.system("py traine_nn.py s2k s3k")
-os.system("py traine_nn.py s3k s4k")
-os.system("py traine_nn.py s4k s5k")
-os.system("py traine_nn.py s5k s6k")
-os.system("py traine_nn.py s6k s7k")
-os.system("py traine_nn.py s7k s8k")
-os.system("py traine_nn.py s8k s9k")
-os.system("py traine_nn.py s9k s10k")
+os.system(f"py traine_nn.py taghunt300k_lern100k taghunt300k_lern110k")
+for i in range(1, 100):
+    os.system(f"py traine_nn.py taghunt300k_lern1{i}0k taghunt300k_lern1{i+1}0k")
+
