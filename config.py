@@ -7,7 +7,7 @@ SHIPS = [5,4,3,3,2]
 BENCHMARK = 100
 
 ### ML ###
-TRAINING_ROUNDS = 1000
+TRAINING_ROUNDS = 10_000
 BATCH_SIZR = 100
 
 #for evaluvation during training
@@ -19,4 +19,5 @@ EVAL_EVERY = 100_000
 ### Monte Carlo ###
 MONTE_CARLO_SAMPLES = 1000
 MONTE_CARLO_PRIORITY = 5
-HEAT_MAP = True
+
+HEAT_MAP = False

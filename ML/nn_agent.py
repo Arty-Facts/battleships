@@ -8,14 +8,14 @@ class NN_Agent():
         self.targets = targets
 
     def next_tile(self):
-        self.x, self.y = self.network.predict(self.state, self.targets)
-        return self.x, self.y
+        x, y = self.network.predict(self.state, self.targets)
+        return x, y
 
 
-    def result(self, hit):
+    def result(self,x, y, hit, sink):
         if hit:
-            self.state.hit(self.x, self.y)
+            self.state.hit(x, y)
             if self.print_out:
                 print(self.state)
         else:
-            self.state.miss(self.x, self.y)
+            self.state.miss(x, y)

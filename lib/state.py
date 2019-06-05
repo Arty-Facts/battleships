@@ -65,6 +65,19 @@ class State():
     def random(self):
         return randint(0, self.width-1), randint(0, self.higth-1)
 
+    def get_map(self):
+        res = [[0] * self.higth for _ in range(self.width)]
+        for x in range(self.width):
+            for y in range(self.higth):
+                c = self.map[x][y]
+                if c == ".":
+                    res[x][y] = 0
+                elif c == "~":
+                    res[x][y] = 1
+                elif c == "X":
+                    res[x][y] = 2
+        return res
+
     def get(self):
         res = []
         for x in range(self.width):

@@ -1,4 +1,4 @@
-from random import randint, shuffle
+from random import randint, shuffle, seed
 
 class World():
     def __init__(self, width, higth):
@@ -38,6 +38,7 @@ class World():
         return False
     
     def add(self, ship):
+        #seed(1337)
         while(not self.present(ship.id)):
             x, y = self.random()
             shuffle(self._dir)

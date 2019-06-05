@@ -35,9 +35,24 @@ def get_move(agent, world):
         if world.check(x,y):
             return x,y
     return x,y
+        
+def get_best_ans(scores, state, world, targets):
+    res = []
+    #print(scores)
+    for c,s in enumerate(scores[0]):
+        #print(c)
+        res.append((c,s))
+    for c,s in sorted(res, key=lambda x:x[1], reverse=True):
+        #print(s)
+        x,y = targets[c]
+        #print(x,y)
+        if state.free(x,y) and world.check(x,y):
+            #print(x,y, c)
+            #print(state)
+            return torch.tensor([c], dtype=torch.long)
+    print("oj oj")
 
-
-def batchify(Agent ,State , World, Ship, targets, n):
+def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier):
     bx = []
     by = []
     test = False
@@ -58,29 +73,23 @@ def batchify(Agent ,State , World, Ship, targets, n):
         counter = 0
         while(ships_left(ships)):
             counter += 1
-            bx.append(torch.tensor(agent.state.get(), dtype=torch.float))
-            x,y = agent.get_move()
-            hit = world.shot(x,y)
-            yield test, torch.stack(bx), world, state
-            agent.result(hit, x, y)
-            bx = []
-            test = False
-        
-def get_best_ans(scores, state, world, targets):
-    res = []
-    #print(scores)
-    for c,s in enumerate(scores[0]):
-        #print(c)
-        res.append((c,s))
-    for c,s in sorted(res, key=lambda x:x[1], reverse=True):
-        x,y = targets[c]
-        #print(x,y)
-        if state.free(x,y) and world.check(x,y):
-            return torch.tensor([c], dtype=torch.long)
-    print("oj oj")
+            game_state = torch.tensor(agent.state.get(), dtype=torch.float)
+            x,y = agent.get_move(1)
+            hit, sink = world.shot(x,y)
+            output = classifier.model.forward(torch.stack([game_state]))
+            best = get_best_ans(output, state, world, rev_targets)
+            agent.result(x, y, hit, sink)
+            bx.append(game_state)
+            by.append(best)
+            #by.append(targets[(x,y)])
+            if len(by) >= BATCH_SIZR:
+                yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long) 
+                bx = []
+                by = []
+                test = False
 
 def train_neural(Agent ,State , World, Ship, model="", n=1000):
-    targets , rev_targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
+    targets, rev_targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger(len(targets),len(targets))
     optimizer = optim.Adam(classifier.model.parameters())
     if model != "":
@@ -88,21 +97,20 @@ def train_neural(Agent ,State , World, Ship, model="", n=1000):
         classifier.model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    for test, bx, world, state in batchify(Agent ,State , World, Ship, targets, n):
+    for test, bx, by in batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier):
         optimizer.zero_grad()
         output = classifier.model.forward(bx)
-        best = get_best_ans(output, state, world, rev_targets)
-        loss = F.cross_entropy(output, best)
+        loss = F.cross_entropy(output, by)
         loss.backward()
         optimizer.step()
         if test and EVAL_DURING_RUNTIME:
             print()
             print(bench(classifier,EVAL_ROUNDS))
-    print()
+    print("["+"+"*100 +"]", 100, "%")
     return classifier, optimizer
 
 def load_model(model):
-    targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
+    _, targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger(len(targets),len(targets))
 
     checkpoint = torch.load( f"ML/models/{model}")

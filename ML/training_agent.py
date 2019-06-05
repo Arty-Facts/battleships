@@ -1,4 +1,4 @@
-from random import randint, shuffle, getrandbits
+from random import randint, shuffle, getrandbits, seed
 
 def neighbors(x,y):
     return [
@@ -25,6 +25,7 @@ class Train():
         return x,y
 
     def next_tile(self):
+        #seed(1337)
         #do/while pls
         x, y = -1, -1
         while not self.state.free(x,y):
@@ -37,7 +38,7 @@ class Train():
                     self.targets.pop()
         return x, y
 
-    def result(self, hit, x, y):
+    def result(self, x, y, hit, sink):
         self.visited.add((x,y))
         if (x,y) in self.targets:
             self.targets.remove((x,y))
