@@ -29,8 +29,8 @@ def run(world, agent):
     while(ships_left(ships) and counter < 2*(WORLD_SIZE_X*WORLD_SIZE_Y)):
         counter += 1
         x,y = agent.next_tile()
-        hit = world.shot(x,y)
-        agent.result(hit)
+        hit, _ = world.shot(x,y)
+        agent.result(x, y, hit, False)
     #print(agent.state)
     return counter
 
