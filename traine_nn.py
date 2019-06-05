@@ -12,6 +12,8 @@ import torch
       
 def main(model, save=None):
     print(model)
+    if model == "init":
+        model = ""
     start = time()
     print("Started Taining")
     network , optimizer = train_neural(Train ,State , World, Ship, n=TRAINING_ROUNDS, model=model)
