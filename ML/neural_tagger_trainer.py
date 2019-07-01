@@ -49,10 +49,13 @@ def get_best_ans(scores, state, world, targets):
         if state.free(x,y) and world.check(x,y):
             #print(x,y, c)
             #print(state)
-            return torch.tensor([c], dtype=torch.long)
+            if torch.cuda.is_available() and GPU:
+                return torch.tensor([c], dtype=torch.long).cuda()
+            else:
+                return torch.tensor([c], dtype=torch.long)
     print("oj oj")
 
-def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier):
+def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, model):
     bx = []
     by = []
     test = False
@@ -73,17 +76,25 @@ def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier):
         counter = 0
         while(ships_left(ships)):
             counter += 1
-            game_state = torch.tensor(agent.state.get(), dtype=torch.float)
-            x,y = agent.get_move(1)
+            if torch.cuda.is_available() and GPU:
+                game_state = torch.tensor(agent.state.get(), dtype=torch.float).cuda()
+            else:
+                game_state = torch.tensor(agent.state.get(), dtype=torch.float)
+            x,y = agent.get_move(SEEK)
             hit, sink = world.shot(x,y)
-            output = classifier.model.forward(torch.stack([game_state]))
-            best = get_best_ans(output, state, world, rev_targets)
-            agent.result(x, y, hit, sink)
             bx.append(game_state)
-            by.append(best)
-            #by.append(targets[(x,y)])
+            if GUID:
+                by.append(targets[(x,y)])
+            else:
+                output = classifier.model.forward(torch.stack([game_state]))
+                best = get_best_ans(output, state, world, rev_targets)
+                by.append(best)
+            agent.result(x, y, hit, sink)
             if len(by) >= BATCH_SIZR:
-                yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long) 
+                if torch.cuda.is_available() and GPU:
+                    yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long).cuda() 
+                else:
+                    yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long) 
                 bx = []
                 by = []
                 test = False
@@ -93,11 +104,14 @@ def train_neural(Agent ,State , World, Ship, model="", n=1000):
     classifier = NeuralTagger(len(targets),len(targets))
     optimizer = optim.Adam(classifier.model.parameters())
     if model != "":
-        checkpoint = torch.load( f"ML/models/{model}")
+        checkpoint = torch.load(model)
         classifier.model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    for test, bx, by in batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier):
+    if torch.cuda.is_available() and GPU:
+        classifier.model = classifier.model.cuda()
+
+    for test, bx, by in batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, model):
         optimizer.zero_grad()
         output = classifier.model.forward(bx)
         loss = F.cross_entropy(output, by)
@@ -113,6 +127,8 @@ def load_model(model):
     _, targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger(len(targets),len(targets))
 
-    checkpoint = torch.load( f"ML/models/{model}")
+    checkpoint = torch.load( model)
     classifier.model.load_state_dict(checkpoint['model_state_dict'])
+    if torch.cuda.is_available() and GPU:
+        classifier.model = classifier.model.cuda()
     return classifier

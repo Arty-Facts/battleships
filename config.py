@@ -9,6 +9,12 @@ BENCHMARK = 100
 ### ML ###
 TRAINING_ROUNDS = 10_000
 BATCH_SIZR = 100
+GPU = False
+
+SEEK = 3
+GENARATIONS = 10
+GUID = True
+PATH = "./ML/genetic/100I_5X300H_100O"
 
 #for evaluvation during training
 EVAL_DURING_RUNTIME = False

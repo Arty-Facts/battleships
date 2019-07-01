@@ -1,5 +1,4 @@
 from ML.tagger import Tagger
-from ML.network import Network
 import matplotlib.pyplot as plt
 from config import *
 import numpy as np
@@ -7,14 +6,11 @@ import torch
 
 class NeuralTagger(Tagger):
 
-    def __init__(self,input_dim, target_dim, hidden_dim=300,):
-        self.model = Network(input_dim,hidden_dim, target_dim)
+    def __init__(self, network):
+        self.model = network
 
     def predict(self, state, targets):
-        if torch.cuda.is_available() and GPU:
-            inp = torch.tensor(state.get(), dtype=torch.float).cuda()
-        else:
-            inp = torch.tensor(state.get(), dtype=torch.float)
+        inp = torch.tensor(state.get(), dtype=torch.float)
         scores = self.model.forward(inp)
         #TODO: pick the best and valid 
         if HEAT_MAP:
