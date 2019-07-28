@@ -28,7 +28,7 @@ def train(model):
     torch.save({
             'model_state_dict': network.model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
-            }, f"{PATH}/{int(score)}.{gen+1}")
+            }, f"{PATH}/{int(score)}.{int(gen)+1}")
 
     
 def main():
@@ -44,13 +44,17 @@ def main():
             for s,g, m in models:
                 train(m)
         models = sorted([str(x.name).split('.') + [x] for x in path.iterdir() if x.is_file()])
-        if len(models) > GENARATIONS:
+        removed = 0
+        if len(models) > GENARATIONS*1.5:
             for i in range(1, len(models)):
                 if models[i-1][0] == models[i][0]:
                     models[i-1][2].unlink() 
+                    removed += 1
+                if not (len(models) - removed > GENARATIONS*1.5):
+                    break 
 
         if len(models) > GENARATIONS:
-            for s, g , m in models[GENARATIONS:]:
+            for s, g , m in models[GENARATIONS+1:]:
                 m.unlink() 
 
 

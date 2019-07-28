@@ -16,6 +16,16 @@ class Network(torch.nn.Module):
                                         torch.nn.ReLU(), \
                                         torch.nn.Linear(hidden_dim, hidden_dim),\
                                         torch.nn.ReLU(), \
+                                        torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        torch.nn.ReLU(), \
+                                        torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        torch.nn.ReLU(), \
+                                        torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        torch.nn.ReLU(), \
+                                        torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        torch.nn.ReLU(), \
+                                        torch.nn.Linear(hidden_dim, hidden_dim),\
+                                        torch.nn.ReLU(), \
                                         torch.nn.Linear(hidden_dim, output_dim))
         
 

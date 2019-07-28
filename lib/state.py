@@ -3,6 +3,8 @@ from config import *
 
 class State():
     def __init__(self, width, higth):
+        self.latest_result = 0
+        self.ticks = width * higth
         self.width = width
         self.higth = higth
         self.map = [['.'] * higth for _ in range(width)]
@@ -23,12 +25,18 @@ class State():
         return res
     
     def hit(self, x, y):
+        self.latest_result = 1
+        ticks -= 1
         self.map[x][y] = 'X'
 
     def sinc(self, x, y):
+        self.latest_result = 2
+        ticks -= 1
         self.map[x][y] = '*'
     
     def miss(self, x, y):
+        self.latest_result = 0
+        ticks -= 1
         self.map[x][y] = '~'
 
     def free(self,x,y):
