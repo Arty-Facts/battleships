@@ -1,18 +1,20 @@
 from random import randint
 from agents.agent import Agent
+from Qlerning.QlerningControler import QlerningControler
+from Qlerning.StateAndReward import StateAndReward
 class QlergningAgent(Agent):
 
     def __init__(self, state, print_out=False ):
-        raise "not finished"
+        self.controler = QlerningControler(state)
+        self.state_and_reward = StateAndReward()
         self.state = state
         self.print_out = print_out
-        self.Qtable = {}
         
     def next_tile(self):
-        x, y = self.random()
-        while(not self.state.free(x,y)):
-            x, y = self.random()
-        return x, y
+        return self.controler.tick(self.state, self.state_and_reward)
+        
+    def save(self):
+        self.controler.save()
 
 
     def result(self, x, y, hit, sinc):

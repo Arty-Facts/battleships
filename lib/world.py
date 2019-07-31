@@ -29,7 +29,9 @@ class World():
     def shot(self, x, y):
         if self.map[x][y] != None:
             self.map[x][y].hit()
-            return True , self.map[x][y].sunk()
+            sunk = self.map[x][y].sunk()
+            self.map[x][y] = None
+            return True , sunk
         return False, False
 
     def check(self, x, y):

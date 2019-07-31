@@ -26,17 +26,17 @@ class State():
     
     def hit(self, x, y):
         self.latest_result = 1
-        ticks -= 1
+        self.ticks -= 1
         self.map[x][y] = 'X'
 
     def sinc(self, x, y):
         self.latest_result = 2
-        ticks -= 1
+        self.ticks -= 1
         self.map[x][y] = '*'
     
     def miss(self, x, y):
         self.latest_result = 0
-        ticks -= 1
+        self.ticks -= 1
         self.map[x][y] = '~'
 
     def free(self,x,y):
