@@ -1,7 +1,7 @@
 ### World ###
 WORLD_SIZE_Y = 5
 WORLD_SIZE_X = 5
-SHIPS = [4]#[5,4,3,3,2]
+SHIPS = [4,2]#[5,4,3,3,2]
 
 ### Benchmark ###
 BENCHMARK = 100
@@ -27,3 +27,7 @@ MONTE_CARLO_SAMPLES = 1000
 MONTE_CARLO_PRIORITY = 5
 
 HEAT_MAP = True
+
+### QLerning ###
+
+EXPLORE_CHANSE = 0

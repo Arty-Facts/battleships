@@ -8,6 +8,6 @@ class StateAndReward:
 
     def reward(self, state):
         if state.latest_result == 1 or state.latest_result == 2:
-            return state.ticks
+            return state.ticks**2
         if state.latest_result == 0:
             return 0

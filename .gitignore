@@ -3,3 +3,6 @@
 *model
 models/
 ML/genetic/
+Qlerning/tables/
+Qlerning/tables/Ntable_5x5.pickle
+Qlerning/tables/Qtable_5x5.pickle

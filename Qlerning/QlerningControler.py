@@ -7,7 +7,7 @@ class QlerningControler:
     # PARAMETERS OF THE LEARNING ALGORITHM - THESE MAY BE TUNED BUT THE DEFAULT VALUES OFTEN WORK REASONABLY WELL 
     GAMMA_DISCOUNT_FACTOR = 0.95; # Must be < 1, small values make it very greedy
     LEARNING_RATE_CONSTANT = 10; # See alpha(), lower values are good for quick results in large and deterministic state spaces
-    explore_chance = 0.5; # The exploration chance during the exploration phase
+    explore_chance = EXPLORE_CHANSE; # The exploration chance during the exploration phase
     REPEAT_ACTION_MAX = 30; # Repeat selected action at most this many times trying reach a new state, without a max it could loop forever if the action cannot lead to a new state
 
     def __init__(self, state):
