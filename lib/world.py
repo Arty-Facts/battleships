@@ -1,4 +1,5 @@
 from random import randint, shuffle, seed
+import torch
 
 class World():
     def __init__(self, width, higth):
@@ -53,6 +54,14 @@ class World():
                         self.map[x+(dir_x*i)][y+(dir_y*i)] = ship
                     self.ships[ship.id] = ship
                     return
+    def get2d(self):
+        shape = self.width, self.higth
+        mask = torch.zeros(shape, dtype=torch.long)
+        for x in range(self.width):
+                for y in range(self.higth):
+                    if not self.free(x,y):
+                        mask[x,y] = 1
+        return mask
 
     def present(self, id):
         return id in self.ships

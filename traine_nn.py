@@ -21,7 +21,7 @@ def main(model, save=None):
     network , optimizer = train_neural(Train ,State , World, Ship, n=TRAINING_ROUNDS, model=model)
     print("Training Done in {:.2f} s".format((time() - start)))
     #TODO: save to file
-    print(bench(network, BENCHMARK))
+    #print(bench(network, BENCHMARK))
     if save == None:
         imp = input("Name of the model:")
         if imp != "":
