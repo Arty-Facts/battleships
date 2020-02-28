@@ -77,31 +77,31 @@ def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, mo
         while(ships_left(ships)):
             counter += 1
             if torch.cuda.is_available() and GPU:
-                game_state = torch.tensor(agent.state.get(), dtype=torch.float).cuda()
+                game_state = agent.state.get2d().cuda()
             else:
-                game_state = torch.tensor(agent.state.get(), dtype=torch.float)
+                game_state = agent.state.get2d()
             x,y = agent.get_move(SEEK)
             hit, sink = world.shot(x,y)
             bx.append(game_state)
-            if GUID:
-                by.append(targets[(x,y)])
+            
+            if torch.cuda.is_available() and GPU:
+                world_state = world.get2d().cuda()
             else:
-                output = classifier.model.forward(torch.stack([game_state]))
-                best = get_best_ans(output, state, world, rev_targets)
-                by.append(best)
+                world_state = world.get2d()
+            by.append(world_state)
             agent.result(x, y, hit, sink)
             if len(by) >= BATCH_SIZR:
                 if torch.cuda.is_available() and GPU:
-                    yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long).cuda() 
+                    yield test, torch.stack(bx), torch.stack(by) 
                 else:
-                    yield test, torch.stack(bx), torch.tensor(by, dtype=torch.long) 
+                    yield test, torch.stack(bx), torch.stack(by)
                 bx = []
                 by = []
                 test = False
 
 def train_neural(Agent ,State , World, Ship, model="", n=1000):
     targets, rev_targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
-    classifier = NeuralTagger(len(targets),len(targets))
+    classifier = NeuralTagger()
     optimizer = optim.Adam(classifier.model.parameters())
     if model != "":
         checkpoint = torch.load(model)

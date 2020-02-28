@@ -1,5 +1,6 @@
 from random import randint, shuffle
 from config import *
+import torch
 
 class State():
     def __init__(self, width, higth):
@@ -108,6 +109,22 @@ class State():
                 elif c == "X":
                     res.append(2)
         return res
+    def get2d(self):
+        shape = self.width, self.higth
+        unk = torch.zeros(shape, dtype=torch.float)
+        ships = torch.zeros(shape, dtype=torch.float)
+        water = torch.zeros(shape, dtype=torch.float)
+        for x in range(self.width):
+            for y in range(self.higth):
+                c = self.map[x][y]
+                if c == ".":
+                    unk[x,y] = 1
+                elif c == "~":
+                    water[x,y] = 1
+                elif c == "X":
+                    ships[x,y] = 1
+        return torch.stack([ships, water, unk])
+
     
     def get_one_hot(self):
         res = []
