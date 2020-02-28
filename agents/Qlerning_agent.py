@@ -12,10 +12,9 @@ class QlergningAgent(Agent):
         
     def next_tile(self):
         return self.controler.tick(self.state, self.state_and_reward)
-        
+
     def save(self):
         self.controler.save()
-
 
     def result(self, x, y, hit, sinc):
         if hit:

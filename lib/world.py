@@ -7,6 +7,8 @@ class World():
         self.map = [[None] * higth for _ in range(width)]
         self.ships = {}
         self._dir = [(1,0),(-1,0),(0,1),(0,-1)]
+        self.ships_left = 0
+        
 
     def __repr__(self):
         res = ""
@@ -30,6 +32,8 @@ class World():
         if self.map[x][y] != None:
             self.map[x][y].hit()
             sunk = self.map[x][y].sunk()
+            if sunk:
+                self.ships_left -= 1
             self.map[x][y] = None
             return True , sunk
         return False, False
@@ -49,6 +53,7 @@ class World():
                     if not self.free(x+(dir_x*i),y+(dir_y*i)):
                         break
                 else:
+                    self.ships_left += 1
                     for i in range(ship.hp):
                         self.map[x+(dir_x*i)][y+(dir_y*i)] = ship
                     self.ships[ship.id] = ship

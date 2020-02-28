@@ -10,7 +10,9 @@ class State():
         self.map = [['.'] * higth for _ in range(width)]
         self._dir = [(1,0),(0,1)]
         self.ships_left = len(SHIPS)
+        self.tiles_explored = 0
         self.tiles_left = sum(SHIPS)
+        self.ships_hit = 0
         self.targets = []
         for x in range(WORLD_SIZE_X):
             for y in range(WORLD_SIZE_Y):
@@ -28,16 +30,24 @@ class State():
         self.latest_result = 1
         self.ticks -= 1
         self.map[x][y] = 'X'
+        self.tiles_explored += 1
+        self.ships_hit += 1
 
     def sinc(self, x, y):
         self.latest_result = 2
         self.ticks -= 1
         self.map[x][y] = '*'
+        self.tiles_explored += 1
+        self.ships_hit += 1
     
     def miss(self, x, y):
         self.latest_result = 0
         self.ticks -= 1
-        self.map[x][y] = '~'
+        if self.map[x][y] == '~':
+            self.latest_result = -1
+        if self.map[x][y] == '.':
+            self.map[x][y] = '~'
+            self.tiles_explored += 1
 
     def free(self,x,y):
         if x < 0 or x >= self.width or y < 0 or y >= self.higth:
@@ -113,4 +123,13 @@ class State():
 
 
         return res
+
+    def reward(self):
+        if self.latest_result == 1 or self.latest_result == 2:
+            return self.ticks
+        if self.latest_result == 0:
+            return 1
+        if self.latest_result == -1:
+            return -10
+        return -1
 

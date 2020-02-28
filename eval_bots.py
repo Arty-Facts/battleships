@@ -13,7 +13,9 @@ from time import time
 
 
 if __name__ == "__main__":
-    agents = [RandomAgent, HuntTarget, HuntTargetParity, MonteCarlo, MonteCarloSinc]
+    #agents = [RandomAgent, HuntTarget, HuntTargetParity, MonteCarlo, MonteCarloSinc]
+    agents = [HuntTargetParity, MonteCarlo, MonteCarloSinc]
+
     print("Benshmarking with", BENCHMARK, "games")
     for agent in agents:
         start = time()

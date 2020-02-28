@@ -21,10 +21,13 @@ def main():
         print("Done in", counter, "moves", "at iteration", i)
      
 def eval_agent():
-    counter = bench(QlergningAgent, 10 )
-    print("\nGames", 10 ,"avg in", counter, "moves")
+    state = State(WORLD_SIZE_X,WORLD_SIZE_Y)
+    world = World(WORLD_SIZE_X,WORLD_SIZE_Y)
+    agent = QlergningAgent(state, print_out=True)
+    counter = run(world, agent)
+    print("Done in", counter, "moves")
 
 if __name__ == "__main__":
-    #eval_agent()
-    main()
+    eval_agent()
+    #main()
     
