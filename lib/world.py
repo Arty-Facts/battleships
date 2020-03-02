@@ -9,6 +9,9 @@ class World():
         self.ships = {}
         self._dir = [(1,0),(-1,0),(0,1),(0,-1)]
         self.ships_left = 0
+        shape = self.width, self.higth
+        self.mask = torch.zeros(shape, dtype=torch.long)
+        
         
 
     def __repr__(self):
@@ -57,16 +60,11 @@ class World():
                     self.ships_left += 1
                     for i in range(ship.hp):
                         self.map[x+(dir_x*i)][y+(dir_y*i)] = ship
+                        self.mask[x+(dir_x*i)][y+(dir_y*i)] = 1
                     self.ships[ship.id] = ship
                     return
     def get2d(self):
-        shape = self.width, self.higth
-        mask = torch.zeros(shape, dtype=torch.long)
-        for x in range(self.width):
-                for y in range(self.higth):
-                    if not self.free(x,y):
-                        mask[x,y] = 1
-        return mask
+        return self.mask
 
     def present(self, id):
         return id in self.ships

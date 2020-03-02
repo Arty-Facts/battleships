@@ -29,7 +29,7 @@ class Train():
         #do/while pls
         x, y = -1, -1
         while not self.state.free(x,y):
-            if len(self.targets) == 0:# or randint(0,100) > 75:
+            if len(self.targets) == 0 or randint(0,100) > 10:
                 x, y = self.random()
             else:
                 #shuffle(self.targets)

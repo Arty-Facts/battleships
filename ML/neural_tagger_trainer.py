@@ -88,6 +88,7 @@ def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, mo
                 world_state = world.get2d().cuda()
             else:
                 world_state = world.get2d()
+            #print(world_state)
             by.append(world_state)
             agent.result(x, y, hit, sink)
             if len(by) >= BATCH_SIZR:
@@ -102,19 +103,19 @@ def batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, mo
 def train_neural(Agent ,State , World, Ship, model="", n=1000):
     targets, rev_targets = make_targets(WORLD_SIZE_X,WORLD_SIZE_Y)
     classifier = NeuralTagger()
+    if torch.cuda.is_available() and GPU:
+        classifier.model = classifier.model.cuda()
     optimizer = optim.Adam(classifier.model.parameters())
     if model != "":
         checkpoint = torch.load(model)
         classifier.model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    if torch.cuda.is_available() and GPU:
-        classifier.model = classifier.model.cuda()
 
     for test, bx, by in batchify(Agent ,State , World, Ship, targets, rev_targets, n, classifier, model):
         optimizer.zero_grad()
         output = classifier.model.forward(bx)
-        loss = F.cross_entropy(output, by)
+        loss = F.cross_entropy(output, by, ignore_index=0)
         loss.backward()
         optimizer.step()
         if test and EVAL_DURING_RUNTIME:
